@@ -40,8 +40,9 @@
 function startSpkTrigAvgAnalysis
 
 % clear existing variables in the matlab workspace.
-clear all;
-
+% clear all;
+% CG: no need to do this anymore since we have functions
+  
 % Step 1: What kind of file are you using? Some like to remove the header
 % from the atf file manually (and may rename it a .dat file), but matlab is
 % capable of ignoring the first number of lines in a text file that
@@ -110,9 +111,11 @@ while ~isempty(answer) % quit program
 end
   
 
- hclose = warndlg('Press ok to close all windows!!!');
- waitfor(hclose);
- close all;
+buttonname = ...
+    questdlg('Close all windows?', '', 'Yes', 'No', 'Yes');
+if strcmp(buttonname, 'Yes')
+  close all;
+end
  %clear all;
  
  %writeNewAllDataFile(file_nameInp, namesHN, origTraces, strOfTop10Lines);
