@@ -10,7 +10,7 @@
 % determined by the TracesPerPage entry in sta_1_master.
 
 function [wintT, NPointsWinPSCNeg, timeSpkTraces, preSpkTraces, ...
-    postSpkTraces, idxSpkTr, avg_period] = ...
+          postSpkTraces, idxSpkTr, avg_period, timestep] = ...
         sta_3_getSpkCloud(CTT, invertCorrectionTraceT, dataT, dataSPT, ...
         IntervalNeg2T, IntervalPos2T, ISIburstT, IntervalPSCNegT, idxLRbursts)
 
@@ -37,6 +37,18 @@ dataSP = dataSPT;
 
 % determine the time step used
 timestep = dataT(2,1) - dataT(1,1);
+
+%% Apply high-pass filtering to attempt to remove baseline shifts
+%% from current traces.
+[filtDataI] = ...
+    filterITraces(dataT(:,3), 5, 3000, timestep);
+
+% display difference between original and filtered traces
+figure; plot(dataT(:, 1), [dataT(:,3), filtDataI]);
+legend('orig I', 'filtered');
+title('High-pass filter of currents');
+xlabel('time');
+ylabel('current');
 
 % these variables setup the time window for the spike triggered average
 NPointsWinNeg = round(IntervalNeg2T/timestep);
@@ -115,7 +127,7 @@ disp(['The average period is ' num2str(avg_period) ' seconds ']);
 [timeSpkTraces, preSpkTraces, postSpkTraces, idxSpkTr] = ...
     splitVectToCellsOfTraces(adjNBI, NPointsWin, nB, ispike, ...
         NPointsWinNeg, NPointsWinPos, NSpikes, ...
-        dataT(:,1), dataT(:,2), dataT(:,3), idxLRbursts);
+        dataT(:,1), dataT(:,2), filtDataI, idxLRbursts);
   
 end
 
