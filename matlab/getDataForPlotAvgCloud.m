@@ -39,9 +39,9 @@ avgTrT = mean(stdMat,2);
 %goodSp
 
 %size(avgTr)
-disp(['avg = ' mat2str(avgTrT)])
+%disp(['avg = ' mat2str(avgTrT)])
 %disp(['avg now    = ' mat2str(avg1)])
-disp(['std = ' mat2str(stdT)])
+%disp(['std = ' mat2str(stdT)])
 
 disp('... getDataForPlotAvgCloud ...') 
 %stdT

@@ -1,9 +1,6 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%               NOTHING TO BE CHANGED BELOW THIS LINE!!!!
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%% DATA PREPARATION %%%%%%%%%%%%%%%%%%%%%%
 % this line says that if you want to calculate the individual sta's, 
-% use the spikeburstforindividualspikesta
+% use the spikeburstforindividualspikesta.
 function sta_5_master_sta(data, strTopFile, origFileName, nameHN)
 
 %sta_1_global %load constants

@@ -1,5 +1,7 @@
 function [hnNames, heName] = getHNnames(filename)
-str = strtok(filename,'_');
+
+  [pathstr, filename, ext] = fileparts(filename);
+  str = strtok(filename,'_');
 str1 = strtok(str,'HE');
 str2 = strrep(str, str1, 'HE');
 hnNames = regexp(str1,'\d','match')
