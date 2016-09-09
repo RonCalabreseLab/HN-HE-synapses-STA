@@ -43,16 +43,10 @@ function startSpkTrigAvgAnalysis
 % clear all;
 % CG: no need to do this anymore since we have functions
   
-% Step 1: What kind of file are you using? Some like to remove the header
-% from the atf file manually (and may rename it a .dat file), but matlab is
-% capable of ignoring the first number of lines in a text file that
-% correspond to the header. if you are using an atf file WITHOUT a header,
-% enter a 0, if you have an atf file WITH the header intact, enter 1
-header = 1;
 
 % assumes correct parsing of file name conform convention
 [file_nameInp, origTraces, strOfTop10Lines] = ...
-    getTraceToAnalyzeFromFile(header);
+    getTraceToAnalyzeFromFile(1);
 
 file_nameInp
 
