@@ -3,7 +3,7 @@ function [idxL, idxR] = plotSpkTrigAvgCloud(winT, traces, fileName, sta_methodT,
     maxIPSC, maxIPSCNN, minIPSC, minIPSCNN, maxNegIPSC, maxNegIPSCNN, ...
     maxPosIPSC, maxPosIPSCNN, minNegIPSC, minNegIPSCNN, minPosIPSC, ...
     minPosIPSCNN, IntervalNeg2T, IntervalPos2T, nameHNsig, period, ...
-    numRemSpks, avgAmpL, avgAmpR, stdAmpL, stdAmpR)
+    numRemSpks, ampLSTD, ampRSTD, avgAmpL, avgAmpR, stdAmpL, stdAmpR)
 
 nameHNsig
 str0 = [];
@@ -30,10 +30,10 @@ str{4} = ['# of Spikes used = ' num2str(goodSp)];
 str{5} = ['# of Removed spikes = ' num2str(numRemSpks)];
 str{6} = ['Average period = ' num2str(period)];
 
-str{7} = ['Cengiz AvgAmpL = ' num2str(avgAmpL)];
-str{8} = ['Cengiz AvgAmpR = ' num2str(avgAmpR)];
-str{9} = ['Cengiz StdAmpL = ' num2str(stdAmpL)];
-str{10} = ['Cengiz StdAmpR = ' num2str(stdAmpR)];
+str{7} = ['AmpLSTD = ' num2str(ampLSTD)];
+str{8} = ['AmpRSTD = ' num2str(ampRSTD)];
+str{9} = '';
+str{10} = '';
 
 %%% fig 1: cloud 
 showFig_Cloud('SpkTrigAvg Cloud', sta_methodT, traces, winT, ...

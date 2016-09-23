@@ -1,0 +1,25 @@
+trying w/o filtering 5/22B HN3 removed 5 spikes from both sides but deleted nothing:
+ampL = 0.10216
+STD = 0.60979
+ampR = 0.1164
+STD = 0.58026
+# spikes = 445
+# removed = 110
+
+after filtering:
+ampL = 0.10239
+STD = 0.60446
+ampR = 0.11621
+STD = 0.57344
+# spikes = 445
+# removed = 110
+
+Changes:
+ampL = -0.22%
+ampR = 0.11621/0.1164 = -0.16%
+
+ampLSTD = 0.60446/0.60979 = -0.87%
+ampRSTD = 0.57344/0.58026 = -1.17%
+
+Overall, amplitudes got insignificantly smaller, and so did
+STDs. Filtering was totally useless.

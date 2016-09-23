@@ -10,9 +10,9 @@ function [timeAfterSpikeRemoval, voltAfterSpikeRemoval, postVolt] = ...
  postVolt = zeros(len,1);
  
  disp(' ')
- disp(['init time spk: ' mat2str(timeAllSpikes)])
- disp(['init volt spk: ' mat2str(voltAllSpikes)])
- disp(['init idx  spk: ' mat2str(indexAllSpikes)])
+ %disp(['init time spk: ' mat2str(timeAllSpikes)])
+ %disp(['init volt spk: ' mat2str(voltAllSpikes)])
+ %disp(['init idx  spk: ' mat2str(indexAllSpikes)])
 %  lenTime = length(timeAllSpikes);
 %  diffTime = timeAllSpikes(2:lenTime) - timeAllSpikes(1:lenTime - 1);
 %  aa = find(diffTime>=1);
@@ -27,12 +27,12 @@ function [timeAfterSpikeRemoval, voltAfterSpikeRemoval, postVolt] = ...
      postVolt(i,1) = postVect(xx(i,1));
  end
  
- disp(['idx left spk: ' mat2str(xx)])
- disp(' ' )
- disp(['time left: ' mat2str(timeAfterSpikeRemoval)])
- disp(['pre volt left: ' mat2str(voltAfterSpikeRemoval)])
- disp(['post volt left: ' mat2str(postVolt)])
- disp(['index left: ' mat2str(idxAfterSpikeRemoval)])
+ % disp(['idx left spk: ' mat2str(xx)])
+ %disp(' ' )
+ %disp(['time left: ' mat2str(timeAfterSpikeRemoval)])
+ %disp(['pre volt left: ' mat2str(voltAfterSpikeRemoval)])
+ %disp(['post volt left: ' mat2str(postVolt)])
+ %disp(['index left: ' mat2str(idxAfterSpikeRemoval)])
  spikesLeft = length(timeAfterSpikeRemoval)
  %length(voltAfterSpikeRemoval)
 %  diffTime = timeAfterSpikeRemoval(2:spikesLeft) - timeAfterSpikeRemoval(1:spikesLeft - 1);

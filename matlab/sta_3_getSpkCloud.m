@@ -12,7 +12,8 @@
 function [wintT, NPointsWinPSCNeg, timeSpkTraces, preSpkTraces, ...
           postSpkTraces, idxSpkTr, avg_period, timestep] = ...
         sta_3_getSpkCloud(CTT, invertCorrectionTraceT, dataT, dataSPT, ...
-        IntervalNeg2T, IntervalPos2T, ISIburstT, IntervalPSCNegT, idxLRbursts)
+        IntervalNeg2T, IntervalPos2T, ISIburstT, IntervalPSCNegT, idxLRbursts, ...
+                          filterData)
 
 % make a time variable and a voltage variable
 %t = dataT(:,1);
@@ -38,17 +39,23 @@ dataSP = dataSPT;
 % determine the time step used
 timestep = dataT(2,1) - dataT(1,1);
 
-%% Apply high-pass filtering to attempt to remove baseline shifts
-%% from current traces.
-[filtDataI] = ...
-    filterITraces(dataT(:,3), 5, 3000, timestep);
+% check for filtering
+if filterData == 1
 
-% display difference between original and filtered traces
-figure; plot(dataT(:, 1), [dataT(:,3), filtDataI]);
-legend('orig I', 'filtered');
-title('High-pass filter of currents');
-xlabel('time');
-ylabel('current');
+  %% Apply high-pass filtering to attempt to remove baseline shifts
+  %% from current traces.
+  currentData = ...
+      filterITraces(dataT(:,3), 5, 3000, timestep);
+
+  % display difference between original and filtered traces
+  figure; plot(dataT(:, 1), [dataT(:,3), currentData]);
+  legend('orig I', 'filtered');
+  title('High-pass filter of currents');
+  xlabel('time');
+  ylabel('current');
+else
+  currentData = dataT(:,3);
+end
 
 % these variables setup the time window for the spike triggered average
 NPointsWinNeg = round(IntervalNeg2T/timestep);
@@ -123,12 +130,12 @@ disp(['The average period is ' num2str(avg_period) ' seconds ']);
 % dataPre = dataT(:,2);
 % dataTime = dataT(:,1);
 
+
 %%% split orig data into cells of recognized bursts of traces
 [timeSpkTraces, preSpkTraces, postSpkTraces, idxSpkTr] = ...
     splitVectToCellsOfTraces(adjNBI, NPointsWin, nB, ispike, ...
         NPointsWinNeg, NPointsWinPos, NSpikes, ...
-        dataT(:,1), dataT(:,2), filtDataI, idxLRbursts);
-  
+        dataT(:,1), dataT(:,2), currentData, idxLRbursts);
 end
 
 % detect spike triggered event of each spike in pre signal (ie, 1st spk of
