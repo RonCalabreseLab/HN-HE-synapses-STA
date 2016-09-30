@@ -1,5 +1,5 @@
 function printToFile_STDs(fileName, signalName, avgTr, stdTr, idxL, idxR, ...
-                          amplL, amplR, ampLSTD, ampRSTD)
+                          amplL, amplR, ampLSTD, ampRSTD, timestep)
 
 k = 1;
 traces = idxR - idxL + 1;
@@ -28,10 +28,10 @@ dlmwrite(newFileName, st, '-append',  'precision', '%.10f');
 dlmwrite(newFileName, '];', '-append','delimiter','');
  
 dlmwrite(newFileName, 'indexLeft = ...', '-append', 'delimiter',''); 
-dlmwrite(newFileName, idxL, '-append');
+dlmwrite(newFileName, idxL * timestep, '-append');
 
 dlmwrite(newFileName, 'idxRight = ...', '-append', 'delimiter',''); 
-dlmwrite(newFileName, idxR, '-append');
+dlmwrite(newFileName, idxR * timestep, '-append');
 
 dlmwrite(newFileName, 'maxSTD = ...', '-append', 'delimiter',''); 
 %aa =  num2str(max(stdT));

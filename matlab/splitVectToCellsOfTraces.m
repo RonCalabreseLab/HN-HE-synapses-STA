@@ -1,7 +1,7 @@
 function [timesSpkTracesT, preSpkTracesT, postSpkTracesT, ...
     idxSpkTrT] = splitVectToCellsOfTraces(adjNBIT, ...
     NPointsWinT, nBT, ispikeT, NPointsWinNegT, NPointsWinPosT, ...
-    NSpikesT, dataTime, dataPre, dataPost, idxLRbur)
+    NSpikesT, dataTime, dataPre, dataPost, idxLRbur, subPreSpikeData)
 
 %disp('....in SPLIT ....')
 lenADJ = length(adjNBIT);
@@ -44,14 +44,20 @@ idxSpkTrT = cell(1,lenADJ); % cell of idices of each trace
                         idxR = ispikeT(tmpIdx) + NPointsWinPosT - 1;
 %                         disp(['ispikeT(tmpIdx) = ' num2str(ispikeT(tmpIdx)) ...
 %                             ' idxL = ' num2str(idxL) ' idxR = ' num2str(idxR)])
-                        postSpkWin = dataPost(idxL:idxR,1) - ...
-                            dataPost(ispikeT(tmpIdx),1);
+                        postSpkWin = dataPost(idxL:idxR,1);
+                        if subPreSpikeData 
+                          postSpkWin = postSpkWin - dataPost(ispikeT(tmpIdx),1);
+                        end
                         winTP(:,NSpikeTrig) = postSpkWin;
-                        postSpkWin = dataPre(idxL:idxR,1) - ...
-                            dataPre(ispikeT(tmpIdx),1);
+                        postSpkWin = dataPre(idxL:idxR,1);
+                        if subPreSpikeData 
+                          postSpkWin = postSpkWin - dataPre(ispikeT(tmpIdx),1);
+                        end
                         winTPpre(:,NSpikeTrig) = postSpkWin;
-                        postSpkWin = dataTime(idxL:idxR,1) - ...
-                            dataTime(ispikeT(tmpIdx),1);
+                        postSpkWin = dataTime(idxL:idxR,1);
+                        if subPreSpikeData 
+                          postSpkWin = postSpkWin - dataTime(ispikeT(tmpIdx),1);
+                        end
                         winTPtime(:,NSpikeTrig) = postSpkWin;
                         winTidx(:,NSpikeTrig) = [idxL; idxR];
                         %win = win + postSpkWin;
@@ -89,14 +95,20 @@ idxSpkTrT = cell(1,lenADJ); % cell of idices of each trace
 %                 disp(['ispikeT(tmpIdx) = ' num2str(ispikeT(tmpIdx)) ...
 %                     ' idxL = ' num2str(idxL) ' idxR = ' num2str(idxR)])
                 %disp(['idxL = ' num2str(idxL) ' idxR = ' num2str(idxR)])
-                postSpkWin = dataPost(idxL:idxR,1) - ...
-                     dataPost(ispikeT(tmpIdx),1);
+                postSpkWin = dataPost(idxL:idxR,1);
+                if subPreSpikeData 
+                  postSpkWin = postSpkWin - dataPost(ispikeT(tmpIdx),1);
+                end
                 winTP(:,NSpikeTrig) = postSpkWin;
-                postSpkWin = dataPre(idxL:idxR,1) - ...
-                     dataPre(ispikeT(tmpIdx),1);
+                postSpkWin = dataPre(idxL:idxR,1);
+                if subPreSpikeData 
+                  postSpkWin = postSpkWin - dataPre(ispikeT(tmpIdx),1);
+                end
                 winTPpre(:,NSpikeTrig) = postSpkWin;
-                postSpkWin = dataTime(idxL:idxR,1) - ...
-                     dataTime(ispikeT(tmpIdx),1);
+                postSpkWin = dataTime(idxL:idxR,1);
+                if subPreSpikeData 
+                  postSpkWin = postSpkWin - dataTime(ispikeT(tmpIdx),1);
+                end
                 winTPtime(:,NSpikeTrig) = postSpkWin;
                 winTidx(:,NSpikeTrig) = [idxL; idxR];
                   %win = win + postSpkWin;

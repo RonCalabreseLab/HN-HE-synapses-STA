@@ -23,3 +23,33 @@ ampRSTD = 0.57344/0.58026 = -1.17%
 
 Overall, amplitudes got insignificantly smaller, and so did
 STDs. Filtering was totally useless.
+
+=> BUT, that's because Mike was already aligning traces by subtracting
+the value at presynaptic spike time.
+
+Adding a new checkbox to disable that reduced the STD:
+ampL = 0.10239
+STD = 0.46414
+ampR = 0.11621
+STD = 0.40003
+
+Change amount:
+ampL = -0.22%
+ampR = +0.16%
+ampLSTD = (0.46414 - 0.60979)/0.60979 = -23.88%
+ampRSTD = (0.40003 - 0.58026)/0.58026 = -31.06%
+
+=> removed some traces that had spikes around 180 ms
+ampL = 0.11083
+STD = 0.47444
+ampR = 0.11935
+STD = 0.41873
+
+Increased amplitudes, but also the STDs. STDs increase probably
+because of reduced data. One can also just display standard error.
+
+=> Kept all spikes at start and end to increase amount of data used;
+but ended up reducing amplitudes:
+
+ampL = 0.081223 +/- 0.42
+ampR = 0.08 +/- 0.36
