@@ -1,4 +1,5 @@
-function printToFile_STDs(fileName, signalName, avgTr, stdTr, idxL, idxR)
+function printToFile_STDs(fileName, signalName, avgTr, stdTr, idxL, idxR, ...
+                          amplL, amplR, ampLSTD, ampRSTD)
 
 k = 1;
 traces = idxR - idxL + 1;
@@ -41,6 +42,13 @@ dlmwrite(newFileName, min(st), '-append', 'precision', '%.10f');
 dlmwrite(newFileName, 'traces = ...', '-append',  'delimiter','');
 dlmwrite(newFileName, traces, '-append');
 %(idxXleft:idxXright,1)
+
+% write the already calculated values for amp and STDs
+dlmwrite(newFileName, [ 'amplL = ' num2str(amplL) ';' ], '-append',  'delimiter','');
+dlmwrite(newFileName, [ 'amplR = ' num2str(amplR) ';' ], '-append',  'delimiter','');
+dlmwrite(newFileName, [ 'ampLSTD = ' num2str(ampLSTD) ';' ], '-append',  'delimiter','');
+dlmwrite(newFileName, [ 'ampRSTD = ' num2str(ampRSTD) ';' ], '-append',  'delimiter','');
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 

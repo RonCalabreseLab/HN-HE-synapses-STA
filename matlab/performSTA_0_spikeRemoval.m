@@ -213,7 +213,8 @@ function performSTA_0_spikeRemoval(CT, invertCorrectionTrace, ...
         %%%%%%%%%%% printing STDs of the remaining traces to file, along
         %%%%%%%%%%% with some stats
         printToFile_STDs(origFileName, nameHN, avgTr, stdTr, ...
-            idxSTDleft, idxSTDright);
+                         idxSTDleft, idxSTDright, ...
+                         maxIPSC - minNegIPSC, maxIPSC - minPosIPSC, ampLSTD, ampRSTD);
 
         %%% plot again traces with removed spikes
         %%% now create a figure that plots the voltage trace, along with the 
