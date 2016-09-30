@@ -5,6 +5,12 @@
 Start by running 
 `startSpkTrigAvgAnalysis.m` or `startSpkTrigAvgAnalysisTRY.m`.
 
+## Notes from Sep 2016 - Cengiz Gunay
+
+Added high-pass filtering option (default on) to current data, but the
+change in synaptic weight estimates were <0.1%. Also made several
+changes around to code to clean and streamline it.
+
 ## Notes from 21 October 2011 - Anca Doloc-Mihu
 
 ### Code from Mike (MTW) with STA analysis was modified by ADM.
