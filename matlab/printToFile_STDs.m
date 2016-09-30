@@ -15,29 +15,30 @@ end
 format long g
 %build up the new file name
 [str1, str2] = strtok(fileName,'.');
-newFileName = strcat(str1,'_',signalName,'_STD',str2);
-dlmwrite(newFileName, 'avg = [', '-append','delimiter','');
+% But make it a Matlab .m script
+newFileName = strcat(str1,'_',signalName,'_STD','.m');
+dlmwrite(newFileName, 'avg_array = [', '-append','delimiter','');
 %maty = mat2str(avgTrT);
 dlmwrite(newFileName, av, '-append',  'precision', '%.10f');
 dlmwrite(newFileName, '];', '-append','delimiter','');
-dlmwrite(newFileName, 'std = [', '-append', 'delimiter','');
+dlmwrite(newFileName, 'std_array = [', '-append', 'delimiter','');
 %matr = mat2str(stdT);
 dlmwrite(newFileName, st, '-append',  'precision', '%.10f');
 dlmwrite(newFileName, '];', '-append','delimiter','');
  
-dlmwrite(newFileName, 'indexLeft = ', '-append', 'delimiter',''); 
+dlmwrite(newFileName, 'indexLeft = ...', '-append', 'delimiter',''); 
 dlmwrite(newFileName, idxL, '-append');
 
-dlmwrite(newFileName, 'idxRight = ', '-append', 'delimiter',''); 
+dlmwrite(newFileName, 'idxRight = ...', '-append', 'delimiter',''); 
 dlmwrite(newFileName, idxR, '-append');
 
-dlmwrite(newFileName, 'maxSTD = ', '-append', 'delimiter',''); 
+dlmwrite(newFileName, 'maxSTD = ...', '-append', 'delimiter',''); 
 %aa =  num2str(max(stdT));
 dlmwrite(newFileName, max(st), '-append', 'precision', '%.10f');
-dlmwrite(newFileName, 'minSTD = ', '-append', 'delimiter',''); 
+dlmwrite(newFileName, 'minSTD = ...', '-append', 'delimiter',''); 
 dlmwrite(newFileName, min(st), '-append', 'precision', '%.10f');
 
-dlmwrite(newFileName, 'traces = ', '-append',  'delimiter','');
+dlmwrite(newFileName, 'traces = ...', '-append',  'delimiter','');
 dlmwrite(newFileName, traces, '-append');
 %(idxXleft:idxXright,1)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
