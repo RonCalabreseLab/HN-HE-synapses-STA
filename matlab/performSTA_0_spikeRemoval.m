@@ -236,6 +236,11 @@ function performSTA_0_spikeRemoval(CT, invertCorrectionTrace, ...
 %         writeToFileNewData(newFileName, 'new', strTopFile, timeLeft, ...
 %             preLeft, postLeft)
 
+        % moved to after writing to files
+        hh = helpdlg('Press OK if done with the plots for this signal','Done');
+        uiwait(hh);
+        close all;
+
      else % flag = -1 - means do not remove anything
             
             %get winF (average over good spikes) with used spikes only; NNT =

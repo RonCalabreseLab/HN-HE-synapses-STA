@@ -69,9 +69,5 @@ showFig_AvgSD('SpkTrigAvg Avg_Std', winT, avgTr, stdTrT, NPointsWinNegLocalT, ..
     xlabel1T, ylabel1T, nameHNsig);
 
 
-hh = helpdlg('Press OK if done with the plots for this signal','Done');
-uiwait(hh);
-close all;
-
 %%% end fig 2
  end
