@@ -47,10 +47,10 @@ noBurStat = 3;
 printNext = 1;
 
 % Added by Cengiz
-filterData = 0; % Whether to apply low-pass filtering
+filterData = 1; % Whether to apply low-pass filtering
 % Mike always aligned current traces by subtracting the value at the
 % pre-synaptic spike time
-subPreSpikeData = 1; 
+subPreSpikeData = 0; 
 
 
 %%% window to ask for deletion - if YES you can delete traces
