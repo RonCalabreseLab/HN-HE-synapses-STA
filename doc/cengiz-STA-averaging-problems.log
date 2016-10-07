@@ -58,3 +58,26 @@ ampR = 0.08 +/- 0.36
 
 ampL = 0.11183 +/- 0.46855
 ampR = 0.12437 +/- 0.41445
+
+=> Switch to HN6->HE12 to improve signal-to-noise ratio (HN7 didn't look good)
+
+delay = 125.04 ms
+spikes used = 189
+ampL = 0.2499 +/- 0.35112
+ampR = 0.25234 +/- 0.35069
+
+=> For completeness, here's HN4->HE12
+
+delay = 118 
+spikes used/removed = 404/154
+ampL = 0.112 +/- 0.38805
+ampR = 0.11979 +/- 0.35177
+
+=> HN7->HE12
+
+delay = 92
+spikes used/removed = 192/154
+ampL = 0.29245 +/- 0.4258
+ampR = 0.27495 +/- 0.36656
+
+
