@@ -7,9 +7,9 @@
 function sta_5_master_sta(data, strTopFile, origFileName, nameHN)
 
 %sta_1_global %load constants
-choiceCT = 'Yes';
+choice = 'Yes';
 
-while strcmp(choiceCT, 'Yes')
+while strcmp(choice, 'Yes')
 %%% load constants
 [sta_method, invertCorrectionTrace, invertTriggeringTrace, ...
 NdiscardFirst, NdiscardLast, IntervalPosLocal, IntervalNegLocal, ...
@@ -19,13 +19,6 @@ spike_subtractor, spike_adder, Overlay, DataNames, x_label, yL, yH, ...
 xlabel1, ylabel1, FntS, TracesPerPage, NBurstsStat, PrintNext] = ...
         askWinSTA_1_global(nameHN);
  
-disp('************ in sta_5_masterSTA line 37 *****************')
-
-choiceCT = questdlg('Do you want to revise the global data?',...
-    'Global data', 'Yes', 'No','Yes');
-end
-   
-
 %%% prepare data for plot of voltages
 [minTimeH,  maxTimeH, minVH, maxVH, tT, V, dataSP, FalseSpike, ...
     burSPKtimes_med, burSPKvolt_med, indexLR_ofBursts] = ...
@@ -33,6 +26,9 @@ end
             invertCorrectionTrace, data, ISIburst, Trefractory, thresh, ...
             peak, sta_method, spike_subtractor, spike_adder);
 
+disp('************ in sta_5_masterSTA line 29 *****************')
+%%% ask if to use new data or previously processed (spikes removed) file
+usePrevProcessedTraces();
 
 
 %%% now create a figure that plots the voltage trace, along with the 
@@ -41,7 +37,11 @@ plotVoltageTraces(tT, V, x_label, DataNames, minTimeH, maxTimeH, ...
        minVH, maxVH, thresh, peak, dataSP(:,3), FalseSpike, CT,...
        burSPKtimes_med, burSPKvolt_med);
 
+disp('************ in sta_5_masterSTA line 37 *****************')
 
+choice = questdlg('Do you want to revise the global data?',...
+    'Global data', 'Yes', 'No','Yes');
+end
 %close all    
 
 disp('******* GLOBAL DATA USED **********')
