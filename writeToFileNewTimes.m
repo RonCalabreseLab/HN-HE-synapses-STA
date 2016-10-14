@@ -25,8 +25,9 @@ end
 %leftTimes'
 matr = [origTimes auxTimes];
 
+% write 6 digit into file to be consistent with input precision
 dlmwrite(newFileName, matr, '-append', 'delimiter' , '\t', ...
-    'precision', '%.5f');
+    'precision', '%.6f');
 
 end
 
