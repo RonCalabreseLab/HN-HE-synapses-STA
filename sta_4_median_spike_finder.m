@@ -16,9 +16,15 @@ function [burst_spiketimes_medians, burst_spikevoltages_medians,...
     dataSP] = sta_4_median_spike_finder(spike_subtractorT, spike_adderT, ...
         burstspikes, burstspiketimes, burstspikevoltages)
 
-spike_subtractor = spike_subtractorT;
-spike_adder = spike_adderT;
+disp('............. in STA 4 .............')
+spike_subtractor = spike_subtractorT
+spike_adder = spike_adderT
 
+disp('*** burstspiketimes ')
+size(burstspiketimes)
+
+disp('*** burstspikes ')
+size(burstspikes)
 % create a variable that corresponds to the last spiketime
 %end_spike = length(spikeNNT);
 
@@ -37,14 +43,21 @@ spike_adder = spike_adderT;
 % as i am also including the observation immediately b4/after, so the
 % middle is automatically included in the analysis
 for ii=1:length(burstspikes)
+%     ii
+     %burstspiketimes{ii}
      % find median spike times in each burst
-     if isempty(find(burstspiketimes{ii} == median(burstspiketimes{ii}))); %when there are an even number of spikes in a burst, it is impossible to find the middle observation, so this would return a value of 1 as in "there is no middle time...
+     % when there is even number of spikes in a burst, it is impossible 
+     % to find the middle observation, so this would return a value of 1 as in "there is no middle time...
+     if isempty(find(burstspiketimes{ii} == median(burstspiketimes{ii}))); 
           % /voltage or spike"
-          burst_spiketimes_median_index = length(burstspiketimes{ii})/2; % see explanation above for even-numbered bursts
-     else
-          burst_spiketimes_median_index = find(burstspiketimes{ii} == median(burstspiketimes{ii})); % if there is a middle spike, this line finds it
+          burst_spiketimes_median_index = length(burstspiketimes{ii})/2;
+     else % if there is a middle spike, this line finds it
+          burst_spiketimes_median_index = find(burstspiketimes{ii} == median(burstspiketimes{ii})); 
      end
-     burst_spiketimes_before_median{ii} = burstspiketimes{ii}(burst_spiketimes_median_index:-1:(burst_spiketimes_median_index-spike_subtractor)) ;
+     
+     %burst_spiketimes_median_index
+     
+     burst_spiketimes_before_median{ii} = burstspiketimes{ii}(burst_spiketimes_median_index:-1:(burst_spiketimes_median_index-spike_subtractor));
      % finds the 5 (or how many you want) spike times/voltages/spikes before the median
      burst_spiketimes_after_median{ii} = burstspiketimes{ii}(burst_spiketimes_median_index:1:(burst_spiketimes_median_index+spike_adder)); 
      % finds the 5 (or how many you want) spike times/voltages/spikes after the median
@@ -117,4 +130,5 @@ spikeNNT=reshape(median_spikes_matrix,spike_rows_cols(1)*spike_rows_cols(2),1);
 %dataSP = zeros(length(spikeTimeT),3);
 dataSP = [spikeTimeT spikeVT spikeNNT];
 
+disp('.............. end STA 4 .............')
 end

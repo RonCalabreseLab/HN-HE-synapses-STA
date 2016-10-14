@@ -20,7 +20,7 @@
 % analyzing
 function [spikeTimeH, spikeVH, spikeNNH, ...
     FalseSpike] = sta_2_spike_detector(tT, TrefractoryT, ...
-    threshT, peakT, CTT, V)
+                                       threshT, peakT, CTT, V)
 
 spikeTimeH = [];
 spikeVH = [];
@@ -46,7 +46,7 @@ sizeSpkAboveTH = size(SpikesAboveThresh);
 AbovN = [0;SpikesAboveThresh;length(V)];
 
 % the number of columns in the AbovN vector created above
-lenAbovN = length(AbovN);
+lenAbovN = length(AbovN)
 
 % now take the difference between the detected spike crossings. in this
 % case the differences taken start with row two (remember o is in the first
@@ -59,7 +59,7 @@ dfAbovN = AbovN(2:lenAbovN)-AbovN(1:lenAbovN-1);
 spNNdfAbovN = find(dfAbovN>minInterSpikeDurN);
 
 % create a vector equal to the number of spikes
-SpikesNum=length(spNNdfAbovN);
+SpikesNum=length(spNNdfAbovN)
 
 % this for loop gets the peak voltage for all of the determined spikes
 % found. this loop will identify two consecutive spike indices, then

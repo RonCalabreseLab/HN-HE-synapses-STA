@@ -51,9 +51,12 @@ choiceTR = questdlg('Use original file (yes) or file with previously removed tra
     'Removed data', 'Yes', 'No','Yes');
 
 
-if strcmp(choiceTR, 'Yes')
-    disp('************ starting new analysis *****************')
+if strcmp(choiceTR, 'Yes') %%%% start brand new analysis
+    %%% chose input file of original data in format: HN3467toHE08_May22.atf
     
+    
+    disp('************ starting new analysis *****************')
+        
     % Step 1: What kind of file are you using? Some like to remove the header
     % from the atf file manually (and may rename it a .dat file), but matlab is
     % capable of ignoring the first number of lines in a text file that
@@ -133,8 +136,13 @@ if strcmp(choiceTR, 'Yes')
      disp('..........DONE!!!...........')
     
 
-else
-    %%% start old file, already analyzed
+else   %%%%%%% start old file, already analyzed
+    
+    %%% chose 2 input files in this order (on the 2 windows): 
+    %%%%% 1) HN3467toHE08_May22_3.atf - containing the spikes left after
+    %%%%% removal process
+    %%%%% 2) HN3467toHE08_May22.atf - original file 
+    
     disp('************ in start ... old analysis *****************')
     header = 0;
     % assumes correct parsing of file name conform convention
@@ -156,18 +164,84 @@ else
     str1(3)
     str2 = strtok(str1(3),'.')
     nameHN = str2(1);
-    
+      
     disp('***************************************************')
-    disp(['******************* Channel #' nameHN ' ********************'])
+    disp(strcat('**************** Channel #', nameHN, ' ****************'))
     disp('***************************************************')
     %disp(['column traces: ' num2str(ck+1)])
 
+    %%% the file includes all recognized spikes; 0 - if recognized and
+    %%% removed; 1 - if recognized and kept
+    readFileTraces = textread(file_nameInp,'');
+    [rTr,cTr] = size(readFileTraces)
+    
     %%% need to be modified since we have a processed signal
 % % %     data = [origTraces(:,1) origTraces(:,ck+1) origTraces(:,noChanels)];
 % % %     sta_5_master_sta(data, strOfTop10Lines, file_nameInp, ...
 % % %         namesHN{ck}); % starts analysis
 
     
+    %%%% plot traces
+% %     figure;
+% %     plot(readFileTraces(:,1), readFileTraces(:,2));
+% %     hold on;
+% %     dataNames = 'Voltage';
+% %     xLab = 'Time,  [Sec]';
+% %     threshT = 30; %default - modify it in askWin...
+% %     minTimeT = min(readFileTraces(:,1));
+% %     maxTimeT = max(readFileTraces(:,1));
+% %     minVT = min(readFileTraces(:,2));
+% %     maxVT = max(readFileTraces(:,2));
+% %     xlabel(xLab);
+% %     ylabel(dataNames);
+% %     axis([minTimeT maxTimeT minVT maxVT]);
+% %     plot([minTimeT maxTimeT],[threshT threshT],'--g')
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%% analyse original file to get data for the remaining spikes
+    %%%%%%% that are read from this above file
+    header = 1;
+
+    % assumes correct parsing of file name conform convention
+    [file_nameInp, origTraces, strOfTop10Lines] = ...
+        getTraceToAnalyzeFromFile(header);%%% reads traces from file
+
+    file_nameInp
+
+    % assumes correct parsing of file name conform convention
+    [namesHN, ~] = getHNnames(file_nameInp); % was heName
+    [~,c] = size(namesHN);
+    ck = 0;
+    
+    for ii = 1:c
+        if(strcmp(namesHN(1,ii),nameHN))
+            ck = ii;
+        end
+    end
+    ck
+    
+    a = size(origTraces);
+    noChanels = a(1,2); 
+    clear a;
+    
+    %%% logic: index ck in namesHN corresponds to (ck+1) signal in the
+    %%% origTraces (because in the file time is on the first column) 
+    data = [origTraces(:,1) origTraces(:,ck+1) origTraces(:,noChanels)];
+
+    
+    disp('.... in startSpkTrig....')
+    disp('size of data: ')
+    size(data)
+    disp('size of recognized data from saved file: ')
+    size(readFileTraces)
+    
+    sta_5_master_sta_forPrevRemovedSpks(data, readFileTraces, ...
+        file_nameInp, nameHN); % starts analysis
+
+    clear data;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 end
 
 

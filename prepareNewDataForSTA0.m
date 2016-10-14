@@ -1,24 +1,28 @@
-function [minTime,  maxTime, minV, maxV, t, V, dataSP, FalseSpikeT, ...
+function [minTime,  maxTime, minV, maxV, dataSP,  ...
     burSPKtimes_medians, burSPKvolt_medians, idxLR_eachBurst] = ...
-        prepareDataForSTA0(CTT, invertTriggeringTraceT, ...
-            invertCorrectionTraceT, dataT, ISIburstT, TrefractoryT, ...
-            threshT, peakT, sta_methodT, spike_subtractorT, spike_adderT)
+        prepareNewDataForSTA0(CTT, dataT, ISIburstT, TrefractoryT, ...
+            threshT, peakT, sta_methodT, spike_subtractorT, ...
+            spike_adderT, idxNewSpikes, invertTriggeringTraceT)
 
 %IntervalNegT, IntervalPosT, IntervalNegLocalT, IntervalPosLocalT,...
+% FalseSpikeT
 
+disp('********** in prepareNewDataForSTA0 **********')
     %V = []; 
-    V0 = [];
     %t = [];
     %dataSP = [];
     burSPKtimes_medians = [];
     burSPKvolt_medians = [];
     idxLR_eachBurst = [];
-    
-    if (CTT == 1);
-          V0 = invertCorrectionTraceT * dataT(:,4);
-          %CorrectionForSTA;
-    end
+   
+    %%% no correction need it since this has been done before
+%     if (CTT == 1);
+%           V0 = invertCorrectionTraceT * dataT(:,4);
+%           %CorrectionForSTA;
+%     end
 
+     %%% no correction need it since this has been done before
+     %V = invertTriggeringTraceT * dataT(:,2);
      V = invertTriggeringTraceT * dataT(:,2);
      t = dataT(:,1);
 %      st = size(dataT(:,1))
@@ -26,17 +30,56 @@ function [minTime,  maxTime, minV, maxV, t, V, dataSP, FalseSpikeT, ...
      minTime = min(t)
      maxTime = t(length(t))
      % maximum and minimum voltage
-     maxV = 1.1 * max(V)
-     minV = 1.1 * min(V)
+%      maxV = 1.1 * max(V)
+%      minV = 1.1 * min(V)
+      maxV = max(V)
+      minV = min(V)
+
+     disp('....in prepNewDataForSTA0...size of input data ... after removal of spikes')
+     size(dataT)
+     size(idxNewSpikes)
      
-     [spikeTime, spikeV, spikeNN, FalseSpikeT] = sta_2_spike_detector(t, ...
-         TrefractoryT, threshT, peakT, CTT, V);
+     %%% ???? we don't really need this step, since the spikes are OK due
+     %%% to previous analysis and removal.
+%      [spikeTime, spikeV, spikeNN, FalseSpikeT] = sta_2_spike_detector(t, ...
+%          TrefractoryT, threshT, peakT, CTT, V);
+
+
+     [rdt, cdt] = size(dataT)
+     spikeTime = zeros(rdt,1);
+     spikeV = zeros(rdt,1);
+     spikeNN = zeros(rdt,1);
+     for ii = 1:rdt
+         spikeTime(ii) = dataT(ii,1);
+         spikeV(ii) = dataT(ii,2);
+         spikeNN(ii) = idxNewSpikes(ii); %%% if CTT = 1 then this needs to be taken from original voltage file
+     end
+     
+     
+     disp('...checking times...')
+     t(1:10)
+     spikeTime(1:10)
+     disp('...checking voltages...')
+     V(1:10)
+     spikeV(1:10)
+     disp('...checking spikes indices...')
+     dataT(1:10)
+     spikeNN(1:10)
      
      %dataSP = zeros(length(spikeTime),3);
      dataSP = [spikeTime spikeV spikeNN];
      
+     disp('....in prepNewDataForSTA0....line 69....size of data ... after STA_2....')
+%      disp('size of spikeTime: ')
+%      size(spikeTime)
+%      disp('size of spikeV: ')
+%      size(spikeV)
+%      disp('size of spikeNN: ')
+%      size(spikeNN)
+%              
+%      disp('size of this dataSP (here) on line 53: ')
+%      size(dataSP)
      
-               
      %xL = -IntervalNegT;
      %xR = IntervalPosT;
      %timestep = dataT(2,1)-dataT(1,1);
