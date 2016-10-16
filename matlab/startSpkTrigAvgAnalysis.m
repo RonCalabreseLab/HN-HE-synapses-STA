@@ -262,13 +262,13 @@ end % of choiceTR
 choiceRepeat = questdlg('Load another file?',...
     'End of analysis', 'Yes', 'No', 'No');
 
-end % choiceRepeat
-
 buttonname = ...
-    questdlg('Close all windows?', '', 'Yes', 'No', 'Yes');
+questdlg('Close all windows?', '', 'Yes', 'No', 'Yes');
 if strcmp(buttonname, 'Yes')
   close all;
 end
+
+  end % choiceRepeat
 
 end % of function
 
