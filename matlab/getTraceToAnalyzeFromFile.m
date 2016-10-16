@@ -5,9 +5,10 @@
 % enter a 0, if you have an atf file WITH the header intact, enter 1
 %
 % file syntax: time trace1 trace2 trace3 trace4 tracePost
-function [fileName, origData, strTopFile] = getTraceToAnalyzeFromFile(headerHere)
+function [fileName, origData, strTopFile] = ...
+      getTraceToAnalyzeFromFile(headerHere, filePattern, selectMessage)
 
-[fileName, pathname] = uigetfile('*.atf','Please select your .atf file');
+fileName = uigetfile(filePattern, selectMessage);
 origData = [];
 strTopFile = [];
 

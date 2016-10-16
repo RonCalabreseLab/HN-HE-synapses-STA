@@ -39,85 +39,238 @@
 
 function startSpkTrigAvgAnalysis
 
-% clear existing variables in the matlab workspace.
-% clear all;
-% CG: no need to do this anymore since we have functions
+  1;
+  % clear existing variables in the matlab workspace.
+  %clear all;
   
+  % Start one repeat
+  choiceRepeat = 'Yes';
+  
+  while strcmp(choiceRepeat, 'Yes')
 
-% assumes correct parsing of file name conform convention
-[file_nameInp, origTraces, strOfTop10Lines] = ...
-    getTraceToAnalyzeFromFile(1);
+%load data from file 
+%%% - if yes do nothing bc the file is already loaded
+%%% - if no - means use file with previously removed traces
+choiceTR_Orig = 'Original';
+choiceTR_Removed = 'Pre-removed';
+choiceTR = questdlg(['Start new analysis from original data file or load ' ...
+                    'HN file with previously removed spikes?'], ...                    
+                    'Starting file selection', ...
+                    choiceTR_Orig, choiceTR_Removed, choiceTR_Orig);
 
-file_nameInp
-
-% assumes correct parsing of file name conform convention
-[namesHN, ~] = getHNnames(file_nameInp); % was heName
-[~,c] = size(namesHN);
-
-a = size(origTraces);
-noChanels = a(1,2); 
-clear a;
-
-% select your signal; press 'Cancel' to quit program.
-prompt = 'Enter name of HN signal: ';
-for i = 1:c-1
-    prompt = strcat(prompt,namesHN(1,i),', ');
-end
-prompt = strcat(prompt, namesHN(1,c));
-%prompt = {'Enter name of HN signal: '};
-
-name = 'Signal Input';
-numlines = 1;
-defaultanswer = {'3'};
-answer = inputdlg(prompt,name,numlines,defaultanswer);
-% disp(['Selected channel: ' num2str(answer)])
-while ~isempty(answer) % quit program    
-    %[val status] = answer{1} %str2num(answer{1})
-    val = answer{1};
-    ck = 0; % returns index of signal in namesHN, if signal is found
-    for i = 1:c
-       if strcmp(val, namesHN(1,i))
-           ck = i;
-           break;
-       end
-    end
-    if ck > 0
-        %disp(['here signal ' val ' at index ' num2str(ck)]);
-        disp('***************************************************')
-        disp(['******************* Channel #' namesHN{ck} ' ********************'])
-        disp('***************************************************')
-        %disp(['column traces: ' num2str(ck+1)])
-
-        %%% logic: index ck in namesHN corresponds to (ck+1) signal in the
-        %%% origTraces (because in the file time is on the first column) 
-        data = [origTraces(:,1) origTraces(:,ck+1) origTraces(:,noChanels)];
-        
-        sta_5_master_sta(data, strOfTop10Lines, file_nameInp, ...
-            namesHN{ck}); % starts analysis
-
-        clear data;
-    else
-        h = errordlg(['Signal ' val ' not found'],'Signal Error');
-        uiwait(h);
-    end
+if strcmp(choiceTR, choiceTR_Orig) %%%% start brand new analysis
+    %%% chose input file of original data in format: HN3467toHE08_May22.atf
     
+    
+    disp('************ starting new analysis *****************')
+        
+    % Step 1: What kind of file are you using? Some like to remove the header
+    % from the atf file manually (and may rename it a .dat file), but matlab is
+    % capable of ignoring the first number of lines in a text file that
+    % correspond to the header. if you are using an atf file WITHOUT a header,
+    % enter a 0, if you have an atf file WITH the header intact, enter 1
+    header = 1;
+
+    %%% reads traces from file
+    % assumes correct parsing of file name conform convention
+    [file_nameInp, origTraces, strOfTop10Lines] = ...
+        getTraceToAnalyzeFromFile(header, '*.atf', ...
+                                          'Select your original data file');
+
+    file_nameInp
+
+    % assumes correct parsing of file name conform convention
+    [namesHN, ~] = getHNnames(file_nameInp); % was heName
+    [~,c] = size(namesHN);
+
+    a = size(origTraces);
+    noChanels = a(1,2); 
+    clear a;
+
+    % select your signal; press 'Cancel' to quit program.
+    prompt = 'Enter name of HN signal: ';
+    for i = 1:c-1
+        prompt = strcat(prompt,namesHN(1,i),', ');
+    end
+    prompt = strcat(prompt, namesHN(1,c));
+    %prompt = {'Enter name of HN signal: '};
+
+    name = 'Signal Input';
+    numlines = 1;
+    defaultanswer = {'3'};
     answer = inputdlg(prompt,name,numlines,defaultanswer);
-end
-  
+    % disp(['Selected channel: ' num2str(answer)])
+    while ~isempty(answer) % quit program    
+        %[val status] = answer{1} %str2num(answer{1})
+        val = answer{1};
+        ck = 0; % returns index of signal in namesHN, if signal is found
+        for i = 1:c
+           if strcmp(val, namesHN(1,i))
+               ck = i;
+               break;
+           end
+        end
+        if ck > 0
+            %disp(['here signal ' val ' at index ' num2str(ck)]);
+            disp('***************************************************')
+            disp(['******************* Channel #' namesHN{ck} ' ********************'])
+            disp('***************************************************')
+            %disp(['column traces: ' num2str(ck+1)])
+
+            %%% logic: index ck in namesHN corresponds to (ck+1) signal in the
+            %%% origTraces (because in the file time is on the first column) 
+            data = [origTraces(:,1) origTraces(:,ck+1) origTraces(:,noChanels)];
+
+            sta_5_master_sta(data, strOfTop10Lines, file_nameInp, ...
+                namesHN{ck}); % starts analysis
+
+            clear data;
+        else
+            h = errordlg(['Signal ' val ' not found'],'Signal Error');
+            uiwait(h);
+        end
+
+        answer = inputdlg(prompt,name,numlines,defaultanswer);
+    end
+
+
+     hclose = warndlg('Press ok to close all windows!!!');
+     waitfor(hclose);
+     close all;
+     %clear all;
+
+     %writeNewAllDataFile(file_nameInp, namesHN, origTraces, strOfTop10Lines);
+     %writeAllDataToFileNewFormat(file_nameInp, namesHN, origTraces, strOfTop10Lines); 
+     %%% tmp commented out to speed up the programming
+     disp('..........DONE!!!...........')
+    
+
+else   %%%%%%% start old file, already analyzed
+    
+    %%% chose 2 input files in this order (on the 2 windows): 
+    %%%%% 1) HN3467toHE08_May22_3.atf - containing the spikes left after
+    %%%%% removal process
+    %%%%% 2) HN3467toHE08_May22.atf - original file 
+    
+    disp('************ in start ... old analysis *****************')
+    header = 0;
+    % assumes correct parsing of file name conform convention
+    [file_nameInp, origTraces, strOfTop10Lines] = ...
+        getTraceToAnalyzeFromFile(header, '*.dat', ...
+                                          'Select HN data file with removed spikes'); ...
+    %%% reads traces from file
+
+    file_nameInp
+    
+    newFileName = file_nameInp;
+    
+    % assumes correct parsing of file name conform convention
+    [namesHN, ~] = getHNnames(file_nameInp); % was heName
+    [~,c] = size(namesHN);
+
+    a = size(origTraces);
+    noChanels = a(1,2) 
+    clear a;
+    
+    % get the signal from the file name
+    str1 = strsplit(file_nameInp,'_')
+    str1(3)
+    str2 = strtok(str1(3),'.')
+    nameHN = str2{1};
+      
+    disp('***************************************************')
+    disp(strcat('**************** Channel #', nameHN, ' ****************'))
+    disp('***************************************************')
+    %disp(['column traces: ' num2str(ck+1)])
+
+    %%% the file includes all recognized spikes; 0 - if recognized and
+    %%% removed; 1 - if recognized and kept
+    readFileTraces = textread(file_nameInp,'');
+    [rTr,cTr] = size(readFileTraces)
+    
+    %%% need to be modified since we have a processed signal
+% % %     data = [origTraces(:,1) origTraces(:,ck+1) origTraces(:,noChanels)];
+% % %     sta_5_master_sta(data, strOfTop10Lines, file_nameInp, ...
+% % %         namesHN{ck}); % starts analysis
+
+    
+    %%%% plot traces
+% %     figure;
+% %     plot(readFileTraces(:,1), readFileTraces(:,2));
+% %     hold on;
+% %     dataNames = 'Voltage';
+% %     xLab = 'Time,  [Sec]';
+% %     threshT = 30; %default - modify it in askWin...
+% %     minTimeT = min(readFileTraces(:,1));
+% %     maxTimeT = max(readFileTraces(:,1));
+% %     minVT = min(readFileTraces(:,2));
+% %     maxVT = max(readFileTraces(:,2));
+% %     xlabel(xLab);
+% %     ylabel(dataNames);
+% %     axis([minTimeT maxTimeT minVT maxVT]);
+% %     plot([minTimeT maxTimeT],[threshT threshT],'--g')
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%% analyse original file to get data for the remaining spikes
+    %%%%%%% that are read from this above file
+    header = 1;
+
+    % assumes correct parsing of file name conform convention
+    [file_nameInp, origTraces, strOfTop10Lines] = ...
+        getTraceToAnalyzeFromFile(header, '*.atf', ...
+                                          'Select your original data file');
+
+    file_nameInp
+
+    % assumes correct parsing of file name conform convention
+    [namesHN, ~] = getHNnames(file_nameInp); % was heName
+    [~,c] = size(namesHN);
+    ck = 0;
+    
+    for ii = 1:c
+        if(strcmp(namesHN(1,ii),nameHN))
+            ck = ii;
+        end
+    end
+    ck
+    
+    a = size(origTraces);
+    noChanels = a(1,2); 
+    clear a;
+    
+    %%% logic: index ck in namesHN corresponds to (ck+1) signal in the
+    %%% origTraces (because in the file time is on the first column) 
+    data = [origTraces(:,1) origTraces(:,ck+1) origTraces(:,noChanels)];
+
+    
+    disp('.... in startSpkTrig....')
+    disp('size of data: ')
+    size(data)
+    disp('size of recognized data from saved file: ')
+    size(readFileTraces)
+    
+    sta_5_master_sta_forPrevRemovedSpks(data, readFileTraces, ...
+        file_nameInp, nameHN); % starts analysis
+
+    clear data;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+end % of choiceTR
+
+
+choiceRepeat = questdlg('Load another file?',...
+    'End of analysis', 'Yes', 'No', 'No');
+
+end % choiceRepeat
 
 buttonname = ...
     questdlg('Close all windows?', '', 'Yes', 'No', 'Yes');
 if strcmp(buttonname, 'Yes')
   close all;
 end
- %clear all;
- 
- %writeNewAllDataFile(file_nameInp, namesHN, origTraces, strOfTop10Lines);
- %writeAllDataToFileNewFormat(file_nameInp, namesHN, origTraces, strOfTop10Lines); 
- %%% tmp commented out to speed up the programming
- disp('..........DONE!!!...........')
- clear all;
-end
+
+end % of function
 
 
 %disp('uuuuuuuuu');
@@ -140,3 +293,17 @@ end
 % % 
 % % %sta_1_global % global variables
 % % sta_5_master_sta(data, strOfTop10Lines, idxCell, file_nameInp); % starts analysis according to user choices
+
+
+%%%%%%%%%%%%%%%%%%%%%
+% fileNameNew = uigetfile('*.atf','Please select your .atf file');
+%     prevData = load(fileNameNew); %put in file extension .dat or .atf.     
+%     [ro,co] = size(prevData)
+%     data = zeros(ro,co);
+%     data = prevData;
+%     size(data)
+%     disp('************ in start ... old analysis *****************')
+%     str1 = strsplit(fileNameNew,'_')
+%     str1(3)
+%     str2 = strtok(str1(3),'.')
+%     nameHN = str2(1);

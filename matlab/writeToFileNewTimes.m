@@ -1,7 +1,11 @@
 function newFileName = writeToFileNewTimes(fileName, namehn, origTimes, leftTimes)
-        
+ 
+% get file name base and extension
 [str1, str2] = strtok(fileName,'.');
-newFileName = strcat(str1, '_', namehn, str2)        
+
+% add date/time stamp
+newFileName = strcat(str1, '_', namehn, '_', ...
+                     datestr(now, 'yyyy-mm-dd_HH:MM'), '.dat')        
    
 % origTimes
 % leftTimes
@@ -23,10 +27,13 @@ end
 
 %mat = [origTimes auxTimes leftTimes]
 %leftTimes'
-matr = [origTimes auxTimes];
 
-dlmwrite(newFileName, matr, '-append', 'delimiter' , '\t', ...
-    'precision', '%.5f');
+% add indices to end to make finding spikes easier next time
+matr = [origTimes(:, 1) auxTimes origTimes(:, 3)];
+
+% write 6 digit into file to be consistent with input precision
+% CG: removed '-append' so that file contains only one set of removed spike data
+dlmwrite(newFileName, matr, 'delimiter' , '\t', 'precision', '%.6f');
 
 end
 

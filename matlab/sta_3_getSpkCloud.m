@@ -15,6 +15,9 @@ function [wintT, NPointsWinPSCNeg, timeSpkTraces, preSpkTraces, ...
         IntervalNeg2T, IntervalPos2T, ISIburstT, IntervalPSCNegT, idxLRbursts, ...
                           filterData, subPreSpikeData)
 
+    
+    disp('************ in sta_3_getSpkTraces *****************')
+    
 % make a time variable and a voltage variable
 %t = dataT(:,1);
 %V = invertTriggeringTraceT * dataT(:,2);
