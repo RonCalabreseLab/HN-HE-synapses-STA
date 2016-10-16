@@ -250,7 +250,7 @@ else   %%%%%%% start old file, already analyzed
     size(readFileTraces)
     
     sta_5_master_sta_forPrevRemovedSpks(data, readFileTraces, ...
-        file_nameInp, nameHN, newFileName); % starts analysis
+        file_nameInp, nameHN); % starts analysis
 
     clear data;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

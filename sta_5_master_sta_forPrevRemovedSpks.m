@@ -5,7 +5,7 @@
 % this line says that if you want to calculate the individual sta's, 
 % use the spikeburstforindividualspikesta
 function sta_5_master_sta_forPrevRemovedSpks(data, dataSpkRemoved, ...
-    origFileName, nameHN, newFileName)
+    origFileName, nameHN)
 
 %sta_1_global %load constants
 choiceCT = 'Yes';
@@ -104,7 +104,7 @@ if sta_method == 0             %%% global sta
         indexLR_ofBursts, origFileName, nameHN, sta_method, CalcMin, ...
         xlabel1, ylabel1, tT, V, x_label, DataNames, minTimeH, maxTimeH, ...
         minVH, maxVH, thresh, peak, FalseSpike, burSPKtimes_med, ...
-        burSPKvolt_med, FntS, IntervalPosLocal, IntervalNegLocal, newFileName);
+        burSPKvolt_med, FntS, IntervalPosLocal, IntervalNegLocal);
 end
 
 disp('************ in sta_5_masterSTA line 85 *****************')
