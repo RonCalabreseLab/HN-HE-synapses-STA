@@ -51,12 +51,14 @@ function startSpkTrigAvgAnalysis
 %load data from file 
 %%% - if yes do nothing bc the file is already loaded
 %%% - if no - means use file with previously removed traces
-choiceTR = 'Yes';
-choiceTR = questdlg('Use original file (yes) or file with previously removed traces (no)?',...
-    'Removed data', 'Yes', 'No','Yes');
+choiceTR_Orig = 'Original';
+choiceTR_Removed = 'Pre-removed';
+choiceTR = questdlg(['Start new analysis from original data file or load ' ...
+                    'HN file with previously removed spikes?'], ...                    
+                    'Starting file selection', ...
+                    choiceTR_Orig, choiceTR_Removed, choiceTR_Orig);
 
-
-if strcmp(choiceTR, 'Yes') %%%% start brand new analysis
+if strcmp(choiceTR, choiceTR_Orig) %%%% start brand new analysis
     %%% chose input file of original data in format: HN3467toHE08_May22.atf
     
     
@@ -69,9 +71,11 @@ if strcmp(choiceTR, 'Yes') %%%% start brand new analysis
     % enter a 0, if you have an atf file WITH the header intact, enter 1
     header = 1;
 
+    %%% reads traces from file
     % assumes correct parsing of file name conform convention
     [file_nameInp, origTraces, strOfTop10Lines] = ...
-        getTraceToAnalyzeFromFile(header);%%% reads traces from file
+        getTraceToAnalyzeFromFile(header, '*.atf', ...
+                                          'Select your original data file');
 
     file_nameInp
 
@@ -152,7 +156,9 @@ else   %%%%%%% start old file, already analyzed
     header = 0;
     % assumes correct parsing of file name conform convention
     [file_nameInp, origTraces, strOfTop10Lines] = ...
-        getTraceToAnalyzeFromFile(header);%%% reads traces from file
+        getTraceToAnalyzeFromFile(header, '*.dat', ...
+                                          'Select HN data file with removed spikes'); ...
+    %%% reads traces from file
 
     file_nameInp
     
@@ -211,7 +217,8 @@ else   %%%%%%% start old file, already analyzed
 
     % assumes correct parsing of file name conform convention
     [file_nameInp, origTraces, strOfTop10Lines] = ...
-        getTraceToAnalyzeFromFile(header);%%% reads traces from file
+        getTraceToAnalyzeFromFile(header, '*.atf', ...
+                                          'Select your original data file');
 
     file_nameInp
 
