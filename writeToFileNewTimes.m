@@ -23,11 +23,13 @@ end
 
 %mat = [origTimes auxTimes leftTimes]
 %leftTimes'
-matr = [origTimes auxTimes];
+
+% add indices to end to make finding spikes easier next time
+matr = [origTimes(:, 1) auxTimes origTimes(:, 3)];
 
 % write 6 digit into file to be consistent with input precision
-dlmwrite(newFileName, matr, '-append', 'delimiter' , '\t', ...
-    'precision', '%.6f');
+% CG: removed '-append' so that file contains only one set of removed spike data
+dlmwrite(newFileName, matr, 'delimiter' , '\t', 'precision', '%.6f');
 
 end
 

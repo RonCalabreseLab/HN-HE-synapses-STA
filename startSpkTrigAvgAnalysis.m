@@ -40,7 +40,7 @@
 function startSpkTrigAvgAnalysis
 
 % clear existing variables in the matlab workspace.
-clear all;
+%clear all;
 
 
 %load data from file 

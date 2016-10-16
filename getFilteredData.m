@@ -12,7 +12,7 @@ function [newT, newV, newDataSP, newData] = getFilteredData(tt, vv, ...
     datasp, dataSpkRem, dt)
 
 format longG;
-disp('------------ in getFilteresData -----------')
+disp('------------ in getFilteredData -----------')
 % keep only the left spikes (1) -  remove the removed spikes (0)
 idx = find(dataSpkRem(:,2));
 % idx(1:10)

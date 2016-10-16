@@ -169,7 +169,8 @@ function performSTA_0_spikeRemoval(CT, invertCorrectionTrace, ...
         
 
         %%% from here starts plotting and writing to files
-        newFileName = writeToFileNewTimes(origFileName, nameHN, dataSP(:,1), ...
+        % CG: add idxafterspikeremoval here to make lookups easier?
+        newFileName = writeToFileNewTimes(origFileName, nameHN, dataSP, ...
             timeAfterSpikeRemoval);
         pause on;
         pause(10);

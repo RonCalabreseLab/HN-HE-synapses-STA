@@ -38,8 +38,8 @@ end
 %%% now create a figure that plots the voltage trace, along with the 
 %%% detected spikes and the lower and upper thresholds
 plotVoltageTraces(tT, V, x_label, DataNames, minTimeH, maxTimeH, ...
-       minVH, maxVH, thresh, peak, dataSP(:,3), FalseSpike, CT,...
-       burSPKtimes_med, burSPKvolt_med);
+       minVH, maxVH, thresh, peak, dataSP(:,3),...
+       burSPKtimes_med, burSPKvolt_med); %, FalseSpike, CT
 
 
 %close all    
