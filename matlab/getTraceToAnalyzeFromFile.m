@@ -8,7 +8,7 @@
 function [fileName, origData, strTopFile] = ...
       getTraceToAnalyzeFromFile(headerHere, filePattern, selectMessage)
 
-fileName = uigetfile(filePattern, selectMessage);
+[fileName, pathname] = uigetfile(filePattern, selectMessage);
 origData = [];
 strTopFile = [];
 
