@@ -39,9 +39,14 @@
 
 function startSpkTrigAvgAnalysis
 
-% clear existing variables in the matlab workspace.
-%clear all;
-
+  1;
+  % clear existing variables in the matlab workspace.
+  %clear all;
+  
+  % Start one repeat
+  choiceRepeat = 'Yes';
+  
+  while strcmp(choiceRepeat, 'Yes')
 
 %load data from file 
 %%% - if yes do nothing bc the file is already loaded
@@ -244,13 +249,16 @@ else   %%%%%%% start old file, already analyzed
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-end
+end % of choiceTR
 
 
+choiceRepeat = questdlg('Load another file?',...
+    'End of analysis', 'Yes', 'No', 'No');
 
+end % choiceRepeat
 
  %clear all;
-end
+end % of function
 
 
 %disp('uuuuuuuuu');
