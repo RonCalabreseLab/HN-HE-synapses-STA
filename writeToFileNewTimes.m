@@ -1,7 +1,11 @@
 function newFileName = writeToFileNewTimes(fileName, namehn, origTimes, leftTimes)
-        
+ 
+% get file name base and extension
 [str1, str2] = strtok(fileName,'.');
-newFileName = strcat(str1, '_', namehn, str2)        
+
+% add date/time stamp
+newFileName = strcat(str1, '_', namehn, '_', ...
+                     datestr(now, 'yyyy-mm-dd_HH:MM'), '.dat')        
    
 % origTimes
 % leftTimes
