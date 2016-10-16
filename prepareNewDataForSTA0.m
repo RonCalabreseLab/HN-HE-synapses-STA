@@ -2,7 +2,7 @@ function [minTime,  maxTime, minV, maxV, dataSP,  ...
     burSPKtimes_medians, burSPKvolt_medians, idxLR_eachBurst] = ...
         prepareNewDataForSTA0(CTT, dataT, ISIburstT, TrefractoryT, ...
             threshT, peakT, sta_methodT, spike_subtractorT, ...
-            spike_adderT, idxNewSpikes, invertTriggeringTraceT)
+            spike_adderT, new_dataSP, invertTriggeringTraceT)
 
 %IntervalNegT, IntervalPosT, IntervalNegLocalT, IntervalPosLocalT,...
 % FalseSpikeT
@@ -37,37 +37,39 @@ disp('********** in prepareNewDataForSTA0 **********')
 
      disp('....in prepNewDataForSTA0...size of input data ... after removal of spikes')
      size(dataT)
-     size(idxNewSpikes)
+     size(new_dataSP)
      
      %%% ???? we don't really need this step, since the spikes are OK due
      %%% to previous analysis and removal.
 %      [spikeTime, spikeV, spikeNN, FalseSpikeT] = sta_2_spike_detector(t, ...
 %          TrefractoryT, threshT, peakT, CTT, V);
 
+% $$$      [rdt, cdt] = size(dataT)
+% $$$      spikeTime = zeros(rdt,1);
+% $$$      spikeV = zeros(rdt,1);
+% $$$      spikeNN = zeros(rdt,1);
+% $$$      for ii = 1:rdt
+% $$$          spikeTime(ii) = dataT(ii,1);
+% $$$          spikeV(ii) = dataT(ii,2);
+% $$$          spikeNN(ii) = idxNewSpikes(ii); %%% if CTT = 1 then this needs to be taken from original voltage file
+% $$$      end
+% $$$      disp('...checking times...')
+% $$$      t(1:10)
+% $$$      spikeTime(1:10)
+% $$$      disp('...checking voltages...')
+% $$$      V(1:10)
+% $$$      spikeV(1:10)
+% $$$      disp('...checking spikes indices...')
+% $$$      dataT(1:10)
+% $$$      spikeNN(1:10)
+% $$$      
+% $$$      %dataSP = zeros(length(spikeTime),3);
+% $$$      dataSP = [spikeTime spikeV spikeNN];
 
-     [rdt, cdt] = size(dataT)
-     spikeTime = zeros(rdt,1);
-     spikeV = zeros(rdt,1);
-     spikeNN = zeros(rdt,1);
-     for ii = 1:rdt
-         spikeTime(ii) = dataT(ii,1);
-         spikeV(ii) = dataT(ii,2);
-         spikeNN(ii) = idxNewSpikes(ii); %%% if CTT = 1 then this needs to be taken from original voltage file
-     end
-     
-     
-     disp('...checking times...')
-     t(1:10)
-     spikeTime(1:10)
-     disp('...checking voltages...')
-     V(1:10)
-     spikeV(1:10)
-     disp('...checking spikes indices...')
-     dataT(1:10)
-     spikeNN(1:10)
-     
-     %dataSP = zeros(length(spikeTime),3);
-     dataSP = [spikeTime spikeV spikeNN];
+     dataSP = new_dataSP;
+     spikeNN = dataSP(:, 3);
+     spikeV = dataSP(:, 2);
+     spikeTime = dataSP(:, 1);
      
      disp('....in prepNewDataForSTA0....line 69....size of data ... after STA_2....')
 %      disp('size of spikeTime: ')
@@ -93,7 +95,7 @@ disp('********** in prepareNewDataForSTA0 **********')
 
      %data = dataT(:,3);
      %len = length(data);
-     NSpikes = length(dataSP)
+     NSpikes = size(dataSP, 1)
 
      %ispike = dataSP(:,3);
      ISI = dataSP(2:NSpikes,1) - dataSP(1:NSpikes-1,1);%inter-spike intervals

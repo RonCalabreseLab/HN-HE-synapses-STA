@@ -151,6 +151,8 @@ else   %%%%%%% start old file, already analyzed
 
     file_nameInp
     
+    newFileName = file_nameInp;
+    
     % assumes correct parsing of file name conform convention
     [namesHN, ~] = getHNnames(file_nameInp); % was heName
     [~,c] = size(namesHN);
@@ -163,7 +165,7 @@ else   %%%%%%% start old file, already analyzed
     str1 = strsplit(file_nameInp,'_')
     str1(3)
     str2 = strtok(str1(3),'.')
-    nameHN = str2(1);
+    nameHN = str2{1};
       
     disp('***************************************************')
     disp(strcat('**************** Channel #', nameHN, ' ****************'))
@@ -236,7 +238,7 @@ else   %%%%%%% start old file, already analyzed
     size(readFileTraces)
     
     sta_5_master_sta_forPrevRemovedSpks(data, readFileTraces, ...
-        file_nameInp, nameHN); % starts analysis
+        file_nameInp, nameHN, newFileName); % starts analysis
 
     clear data;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
