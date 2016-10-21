@@ -17,7 +17,7 @@ format long g
 %build up the new file name
 [str1, str2] = strtok(fileName,'.');
 % But make it a Matlab .m script
-newFileName = strcat(str1,'_',signalName,'_STD_',datestr(now, 'yyyy-mm-dd_HH:MM'), '.m');
+newFileName = strcat(str1,'_',signalName,'_STD_',datestr(now, 'yyyy-mm-dd_HHMM'), '.m');
 
 % First create the file, and then keep appending
 dlmwrite(newFileName, 'avg_array = [','delimiter','');

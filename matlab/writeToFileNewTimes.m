@@ -5,7 +5,7 @@ function newFileName = writeToFileNewTimes(fileName, namehn, origTimes, leftTime
 
 % add date/time stamp
 newFileName = strcat(str1, '_', namehn, '_', ...
-                     datestr(now, 'yyyy-mm-dd_HH:MM'), '.dat')        
+                     datestr(now, 'yyyy-mm-dd_HHMM'), '.dat')        
    
 % origTimes
 % leftTimes
