@@ -12,8 +12,9 @@
 function [wintT, NPointsWinPSCNeg, timeSpkTraces, preSpkTraces, ...
           postSpkTraces, idxSpkTr, avg_period, timestep] = ...
         sta_3_getSpkCloud(CTT, invertCorrectionTraceT, dataT, dataSPT, ...
-        IntervalNeg2T, IntervalPos2T, ISIburstT, IntervalPSCNegT, idxLRbursts, ...
-                          filterData, subPreSpikeData)
+                          IntervalNeg2T, IntervalPos2T, ISIburstT, IntervalPSCNegT, idxLRbursts, ...
+                          filterData, subPreSpikeData, burstSpikes, ...
+                          burstSpikeTimes, burstSpikesIndex)
 
     
     disp('************ in sta_3_getSpkTraces *****************')
@@ -73,9 +74,12 @@ NPointsWinPSCNeg = round(IntervalPSCNegT/timestep);
 % det. IBI (interburst intervals)
 NSpikes = length(dataSP);
 ispike = dataSP(:,3);
-ISI = dataSP(2:NSpikes,1) - dataSP(1:NSpikes-1,1); %diff bw consec spikes
+%ISI = dataSP(2:NSpikes,1) - dataSP(1:NSpikes-1,1); %diff bw consec spikes
 
-nB = find(ISI >= ISIburstT);% + 1; %(interburst intervals)indices of 1st spike
+% CG: take nB from previous analysis
+%nB = find(ISI >= ISIburstT);% + 1; %(interburst intervals)indices of 1st spike
+nB = burstSpikesIndex(:, 2);
+
 %ISI(nB(1)-1) is the interburst interval; ISI(nB(1)) is the 1st spike of 
 %the burst following this interval 
 
@@ -91,8 +95,12 @@ end
 %        dataSP(nB(k),1) - dataSP(nB(k)-1,1)); % or ISI(nB(1)-1)
 % end
 
-
 nBI = nB(2:lennB) - nB(1:lennB-1); % interburst intervals found bw ISI
+% can calculate IBIs here directly
+% $$$ idxLRbursts_mat = vertcat(idxLRbursts{:});
+% $$$ nBI = ([idxLRbursts_mat(:, 1); size(dataT, 1)] - ...
+% $$$        [1; idxLRbursts_mat(:, 2)])*timestep;
+
 %MaxnBI = max(nBI);
 %MeannBI = mean(nBI);
 
@@ -109,15 +117,16 @@ wintT = (-NPointsWinNeg*timestep:timestep:(NPointsWinPos-1)*timestep)';
 
 
 %%%% here %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-lenNBI = length(nBI);
+%lenNBI = length(nBI);
 % tmp var to keep the number of spikes in all bursts; first burst is always
 % ignored; last burst has to be checked if has finished or not (ie it is
 % entirely a burst or just a part of a burst!!!) TO DO
-for k = 1:lenNBI
-    adjNBI(k) = nBI(k);% - 1;
-end%nBI(1:end)]
-adjNBI(lenNBI + 1) = NSpikes - nB(end); % last burst is added
-adjNBI % = nB(i+1) - sum(nBI(i))
+% $$$ for k = 1:lenNBI
+% $$$     adjNBI(k) = nBI(k);% - 1;
+% $$$ end%nBI(1:end)]
+adjNBI = nBI;
+%adjNBI(lenNBI + 1) = NSpikes - nB(end); % last burst is added
+adjNBI
 
 disp(['Total number of spikes is ' num2str(sum(adjNBI))]);
 %MeannBI = floor(mean(nBI));

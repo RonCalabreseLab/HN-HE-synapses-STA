@@ -78,6 +78,8 @@ for i=1:SpikesNum-1
      if (max(V(n1:n2))<=peakT);
           spikeNNH(i_spike)=spikeNaux(i_spike)+n1-1;
           i_spike=i_spike+1;
+     else
+       spikeVAux(i_spike) = [];      % Delete the V
      end
 end
 
@@ -116,14 +118,19 @@ lenSpkNNH = length(spikeNNH);
 % plotVoltageTraces(tT, V, x_label, DataNames, minTimeH, maxTimeH, ...
 %     minVH, maxVH, thresh, peak, spikeNNH, FalseSpike, CT)
 
-%  these commands create variables that will be passed back to sta_1_master
+%  these commands create variables that will be passed back to
+%  sta_1_master
+
+% delete spikes that are too close within TrefractoryT
 spikeTimeAux=tT(spikeNNH); %times of spikes
 spLn=length(spikeTimeAux);
 dfSpikeTimeAux=spikeTimeAux(2:spLn)-spikeTimeAux(1:spLn-1);
 spikeTimeNAux1=find(dfSpikeTimeAux<TrefractoryT);
-spikeNNH(spikeTimeNAux1+1)=[];
-spikeTimeAux(spikeTimeNAux1+1)=[];
-spikeVAux(spikeTimeNAux1+1)=[];
+if ~ isempty(spikeTimeNAux1)
+  spikeNNH	(spikeTimeNAux1+1)=[];
+  spikeTimeAux	(spikeTimeNAux1+1)=[];
+  spikeVAux	(spikeTimeNAux1+1)=[];
+end
 spikeTimeH=spikeTimeAux;
 spikeVH=spikeVAux';
 clear spikeTimeAux;

@@ -57,9 +57,14 @@ for ii=1:length(burstspikes)
      
      %burst_spiketimes_median_index
      
-     burst_spiketimes_before_median{ii} = burstspiketimes{ii}(burst_spiketimes_median_index:-1:(burst_spiketimes_median_index-spike_subtractor));
+     burst_spiketimes_before_median{ii} = ...
+         burstspiketimes{ii}(burst_spiketimes_median_index:-1:...
+                             max(1, burst_spiketimes_median_index-spike_subtractor));
      % finds the 5 (or how many you want) spike times/voltages/spikes before the median
-     burst_spiketimes_after_median{ii} = burstspiketimes{ii}(burst_spiketimes_median_index:1:(burst_spiketimes_median_index+spike_adder)); 
+     burst_spiketimes_after_median{ii} = ...
+         burstspiketimes{ii}(burst_spiketimes_median_index:1:...
+                             min(length(burstspiketimes{ii}), ...
+                                 burst_spiketimes_median_index+spike_adder)); 
      % finds the 5 (or how many you want) spike times/voltages/spikes after the median
      burst_spiketimes_before_median_indices = burst_spiketimes_before_median{ii};
      burst_spikestimes_after_median_indices = burst_spiketimes_after_median{ii};
@@ -77,8 +82,13 @@ for ii=1:length(burstspikes)
      else
           burst_spikevoltages_median_index = burst_spiketimes_median_index;
      end
-     burst_spikevoltages_before_median{ii} = burstspikevoltages{ii}(burst_spikevoltages_median_index:-1:(burst_spikevoltages_median_index-spike_subtractor));
-     burst_spikevoltages_after_median{ii} = burstspikevoltages{ii}(burst_spikevoltages_median_index:1:(burst_spikevoltages_median_index+spike_adder));
+     burst_spikevoltages_before_median{ii} = ...
+         burstspikevoltages{ii}(burst_spikevoltages_median_index:-1:...
+                                max(1, burst_spikevoltages_median_index-spike_subtractor));
+     burst_spikevoltages_after_median{ii} = ...
+         burstspikevoltages{ii}(burst_spikevoltages_median_index:1:...
+                                min(length(burstspiketimes{ii}), ...
+                                    burst_spikevoltages_median_index+spike_adder));
      burst_spikevoltages_before_median_indices = burst_spikevoltages_before_median{ii};
      burst_spikevoltages_after_median_indices = burst_spikevoltages_after_median{ii};
      burst_spikevoltages_medians{ii} = [burst_spikevoltages_before_median_indices(end:-1:2);burst_spikevoltages_after_median_indices];
@@ -89,8 +99,12 @@ for ii=1:length(burstspikes)
      else
           burst_spikes_median_index = burst_spiketimes_median_index;
      end
-     burst_spikes_before_median{ii} = burstspikes{ii}(burst_spikes_median_index:-1:(burst_spikes_median_index-spike_subtractor));
-     burst_spikes_after_median{ii} = burstspikes{ii}(burst_spikes_median_index:1:(burst_spikes_median_index+spike_adder));
+     burst_spikes_before_median{ii} = ...
+         burstspikes{ii}(burst_spikes_median_index:-1:...
+                         max(1, burst_spikes_median_index-spike_subtractor));
+     burst_spikes_after_median{ii} = ...
+         burstspikes{ii}(burst_spikes_median_index:1:...
+                         min(length(burstspiketimes{ii}), burst_spikes_median_index+spike_adder));
      burst_spikes_before_median_indices = burst_spikes_before_median{ii};
      burst_spikes_after_median_indices = burst_spikes_after_median{ii};
      burst_spikes_medians{ii} = [burst_spikes_before_median_indices(end:-1:2);burst_spikes_after_median_indices];
