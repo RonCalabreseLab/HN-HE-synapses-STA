@@ -6,7 +6,7 @@
 function [filtDataI] = filterITraces(dataI, hpf, lpf, dt)
 
 hpf = 5;   % high-pass after this [Hz]
-lpf = 3000; % also filter high freq noise
+lpf = min(3000, 1/dt/2 - 1); % also filter high freq noise
 
 % make a new filter based on the given dt
 % multiply by 2 to find nyquist freq
